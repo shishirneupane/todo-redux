@@ -2,26 +2,27 @@ import { useState } from 'react';
 import './App.css';
 import AddTodo from './components/AddTodo';
 import AddedTodosList from './components/AddedTodosList';
+import { TTodo } from './types';
 
 function App() {
-  const [todos, setTodos] = useState<string[]>([]);
+  const [todos, setTodos] = useState<TTodo[]>([]);
 
-  const addNewTodo = (newTodo: string) => {
-    if (!newTodo.length) return;
+  const addNewTodo = (newTodo: TTodo) => {
+    if (!newTodo.title.length) return;
     setTodos(todos => [...todos, newTodo]);
   }
 
-  const deleteTodo = (todoToDeleteIndex: number) => {
+  const deleteTodo = (todoToDeleteId: TTodo['id']) => {
     setTodos(todos => todos.filter(
-      (_todo, index) => index !== todoToDeleteIndex)
-    );
+      todo => todo.id !== todoToDeleteId
+    ));
   }
 
   const deleteAllTodos = () => setTodos([]);
 
   return (
     <div className="App">
-      <AddTodo addNewTodo={addNewTodo} deleteAllTodos={deleteAllTodos} />
+      <AddTodo todos={todos} addNewTodo={addNewTodo} deleteAllTodos={deleteAllTodos} />
       <hr />
       <AddedTodosList todos={todos} deleteTodo={deleteTodo} />
     </div>

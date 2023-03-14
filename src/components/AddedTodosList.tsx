@@ -1,17 +1,21 @@
 import { FC } from "react";
+import { TTodo } from "../types";
+import AddedTodoListItem from "./AddedTodoListItem";
 
 type AddedTodosListProps = {
-  todos: string[];
-  deleteTodo: (todoToDeleteIndex: number) => void;
+  todos: TTodo[];
+  deleteTodo: (todoToDeleteId: TTodo['id']) => void;
 }
 
 const AddedTodosList: FC<AddedTodosListProps> = ({ todos, deleteTodo }) => {
   return (
     <>
-      {todos.map((todoItem, index) => (
-        <div className='flex-items-center' key={Math.random()}>
-          <p>{todoItem}</p>
-          <button onClick={() => deleteTodo(index)}>Delete</button>
+      {todos.map(todoItem => (
+        <div key={todoItem.id}>
+          <AddedTodoListItem
+            todoItem={todoItem}
+            deleteTodo={deleteTodo}
+          />
         </div>
       ))}
     </>
