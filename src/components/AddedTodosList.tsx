@@ -1,21 +1,15 @@
-import { FC } from "react";
-import { TTodo } from "../types";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
 import AddedTodoListItem from "./AddedTodoListItem";
 
-type AddedTodosListProps = {
-  todos: TTodo[];
-  deleteTodo: (todoToDeleteId: TTodo['id']) => void;
-}
+const AddedTodosList = () => {
+  const todos = useSelector((state: RootState) => state.todos);
 
-const AddedTodosList: FC<AddedTodosListProps> = ({ todos, deleteTodo }) => {
   return (
     <>
       {todos.map(todoItem => (
         <div key={todoItem.id}>
-          <AddedTodoListItem
-            todoItem={todoItem}
-            deleteTodo={deleteTodo}
-          />
+          <AddedTodoListItem todoItem={todoItem} />
         </div>
       ))}
     </>

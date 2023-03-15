@@ -1,21 +1,21 @@
 import { FC, useState } from "react";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../redux/store";
 import { DismissedState, TTodo } from "../types";
+import { deleteTodo } from "./todos.slice";
 
 type AddedTodoListItemProps = {
   todoItem: TTodo;
-  deleteTodo: (todoToDeleteId: TTodo['id']) => void;
 }
 
-const AddedTodoListItem: FC<AddedTodoListItemProps> = ({
-  todoItem,
-  deleteTodo,
-}) => {
+const AddedTodoListItem: FC<AddedTodoListItemProps> = ({ todoItem }) => {
+  const dispatch = useDispatch<AppDispatch>();
   const [dismissedState, setDismissedState] = useState<DismissedState>(DismissedState.DEFAULT);
 
   const handleDeleteTodo = () => {
     setDismissedState(DismissedState.REQUESTED);
     setTimeout(() => {
-      deleteTodo(todoItem.id);
+      dispatch(deleteTodo(todoItem.id));
       setDismissedState(DismissedState.DISMISSED);
     }, 5000);
   }
@@ -29,7 +29,7 @@ const AddedTodoListItem: FC<AddedTodoListItemProps> = ({
   return (
     <>
       {dismissedState === DismissedState.DEFAULT && (
-        <div className='flex-items-center'>
+        <div className='center-flex-items'>
           <p>{todoItem.title}</p>
           <button onClick={handleDeleteTodo}>Delete</button>
         </div>
